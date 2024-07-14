@@ -4,7 +4,7 @@ package org.example.multithreadframe.threadlocal;
 import java.util.Map;
 
 public class FptiTracingThreadLocal {
-    static InheritableThreadLocal<Map<String, String>> mapThreadLocal = new InheritableThreadLocal<>();
+    static ThreadLocal<Map<String, String>> mapThreadLocal = new ThreadLocal<>();
     public static Map<String, String> get(){
         return mapThreadLocal.get();
     }

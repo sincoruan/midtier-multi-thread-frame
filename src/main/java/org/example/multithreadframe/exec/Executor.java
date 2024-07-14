@@ -1,5 +1,6 @@
 package org.example.multithreadframe.exec;
 
+import org.example.multithreadframe.threadlocal.FptiCallable;
 import org.immutables.value.Value;
 
 import java.util.List;
@@ -45,6 +46,8 @@ public interface Executor<T, R> {
     static <T, R> PreloadContextWrapper<R> execPreloader(ServiceContext<T> input,
                                                          PreLoadFunction<T, R> preFunc) {
         return ImmutablePreloadContextWrapper.<R>builder().returnType(preFunc.getReturnType())
-                .future(exec.submit(() -> preFunc.apply(input))).build();
+                .future(exec.submit(
+                        new FptiCallable<>(() -> preFunc.apply(input))
+                )).build();
     }
 }
