@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Value.Immutable
 public interface Executor<T, R> {
     // 线程池
-    ExecutorService exec = Executors.newFixedThreadPool(10);
+    ExecutorService exec = Executors.newFixedThreadPool(2);
     // 预加载器，可以并发执行
     List<PreLoadFunction<T, ?>> preloaders();
     // 处理器

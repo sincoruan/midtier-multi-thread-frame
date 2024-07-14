@@ -15,7 +15,7 @@ public class PreloaderTestThreadLocal<String> implements PreLoadFunction<String,
 
     @Override
     public ProductInfo preLoadData(ServiceContext<String> t) {
-        System.out.println(FptiTracingThreadLocal.get());
+        System.out.println(Thread.currentThread().getName() + ":" + FptiTracingThreadLocal.get());
         return ImmutableProductInfo.builder().name("").price(1.1).build();
     }
 }

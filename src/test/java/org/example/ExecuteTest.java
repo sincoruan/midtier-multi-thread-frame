@@ -33,16 +33,20 @@ public class ExecuteTest {
 
     @Test
     void testThreadLocal() {
-        FptiTracingThreadLocal.set(new HashMap<>());
-        FptiTracingThreadLocal.get().put("1", "a");
-        Executor<String, String> executor
-                = ImmutableExecutor.<String, String>builder().preloaders(
-                        Arrays.asList(new PreloaderTestThreadLocal<String>(){})
-                ).processor((Processor) (serviceContext, dataStore) -> {
-                    System.out.println(FptiTracingThreadLocal.get());
-                    return null;
-                })
-                .build();
-        executor.execute(ImmutableServiceContext.<String>builder().data("").build());
+        for(int i =0; i < 5; i++) {
+            FptiTracingThreadLocal.set(new HashMap<>());
+            FptiTracingThreadLocal.get().put(String.valueOf(i), String.valueOf(i));
+            System.out.println(Thread.currentThread().getName() + " set it as:" + FptiTracingThreadLocal.get());
+            Executor<String, String> executor
+                    = ImmutableExecutor.<String, String>builder().preloaders(
+                            Arrays.asList(new PreloaderTestThreadLocal<String>(){})
+                    ).processor((Processor) (serviceContext, dataStore) -> {
+                        System.out.println(Thread.currentThread().getName() + ":" + FptiTracingThreadLocal.get());
+                        System.out.println();
+                        return null;
+                    })
+                    .build();
+            executor.execute(ImmutableServiceContext.<String>builder().data("").build());
+        }
     }
 }
